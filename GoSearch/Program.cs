@@ -72,7 +72,7 @@ namespace ScreenControlConsole
                 if (Clipboard.ContainsText())
                 {
                     var s= Clipboard.GetText();
-                    if (s.StartsWith("http://") && !s.StartsWith("https://"))
+                    if (s.StartsWith("http://") || s.StartsWith("https://"))
                     {
                         pathType = PathType.WebUrl;
                         return;
@@ -116,7 +116,11 @@ namespace ScreenControlConsole
                 Thread.Sleep(500);
                 if (w.Process.HasExited) throw new TargetWindowExited();
             }
-            w.SwitchToOnlyOne(false);
+            if (!w.CreateNew("Google Images"))
+            {
+                MessageBox.Show("Error: Failed to create new browser window.", "GoSearch");
+                return;
+            }
             try
             {
                 if (!w.Process.HasExited && w.WindowRect.HasValue)
