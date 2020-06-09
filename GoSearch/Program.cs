@@ -19,24 +19,7 @@ namespace ScreenControlConsole
         class TargetWindowExited : Exception
         {
         }
-
-        /// <summary>
-        /// Start an Action within an STA Thread
-        /// </summary>
-        /// <param name="goForIt"></param>
-        static void RunAsSTAThread(Action goForIt)
-        {
-            AutoResetEvent @event = new AutoResetEvent(false);
-            Thread thread = new Thread(
-                () =>
-                {
-                    goForIt();
-                    @event.Set();
-                });
-            thread.SetApartmentState(ApartmentState.STA);
-            thread.Start();
-            @event.WaitOne();
-        }
+        
         static void CtrlV()
         {
             var keys = new[]
@@ -66,8 +49,8 @@ namespace ScreenControlConsole
         {
             PathType pathType = PathType.None;
             string parsedPath = null;
-            
-            RunAsSTAThread(() =>
+
+            Utility.RunAsSTAThread(() =>
             {
                 if (Clipboard.ContainsText())
                 {
@@ -106,7 +89,7 @@ namespace ScreenControlConsole
                 return;
             }
 
-            var w = new MyWindow
+            var w = new ControlledWindow
             {
                 ProcessPath = @"C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe",
                 Arguments = @"-inprivate http://images.google.com"
@@ -116,7 +99,7 @@ namespace ScreenControlConsole
                 Thread.Sleep(500);
                 if (w.Process.HasExited) throw new TargetWindowExited();
             }
-            if (!w.CreateNew("Google Images"))
+            if (!w.CreateNew(x=>x.StartsWith("Google Images")))
             {
                 MessageBox.Show("Error: Failed to create new browser window.", "GoSearch");
                 return;

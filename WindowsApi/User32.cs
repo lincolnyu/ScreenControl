@@ -36,6 +36,12 @@ namespace WindowsApi
         public static extern int SetForegroundWindow(IntPtr hWnd);
 
         [DllImport("user32.dll")]
+        public static extern IntPtr SetFocus(IntPtr hWnd);
+
+        [DllImport("user32.dll")]
+        public static extern IntPtr FindWindow(string className, string windowTitle);
+
+        [DllImport("user32.dll")]
         public static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
 
         [DllImport("user32.dll")]
@@ -94,5 +100,14 @@ namespace WindowsApi
 
         [DllImport("user32.dll", SetLastError = true)]
         public static extern bool GetWindowRect(IntPtr hwnd, out RECT lpRect);
+
+        [DllImport("user32.dll")]
+        public static extern bool GetGUIThreadInfo(uint idThread, ref GUITHREADINFO lpgui);
+
+        [DllImport("user32.dll", SetLastError = true)]
+        public static extern uint GetWindowThreadProcessId(IntPtr hWnd, out uint lpdwProcessId);
+
+        [DllImport("user32.dll")]
+        public static extern IntPtr GetForegroundWindow();
     }
 }

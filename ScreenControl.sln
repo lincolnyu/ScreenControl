@@ -13,6 +13,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Experiment", "Experiment\Ex
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonitorOff", "MonitorOff\MonitorOff.csproj", "{F8E3C42C-8333-4A7A-B84D-92A7AD085A2A}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Downloaders", "Downloaders", "{0E7C1DEE-74CB-4736-96B4-16EB4F978D0B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pingshu8", "Pingshu8\Pingshu8.csproj", "{AA293ECA-65AE-41DE-B2D8-BB33FE8DF04B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Lab", "Lab", "{7857AFB9-B160-4616-ACE9-98E61E49A4BB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,9 +45,17 @@ Global
 		{F8E3C42C-8333-4A7A-B84D-92A7AD085A2A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F8E3C42C-8333-4A7A-B84D-92A7AD085A2A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F8E3C42C-8333-4A7A-B84D-92A7AD085A2A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AA293ECA-65AE-41DE-B2D8-BB33FE8DF04B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AA293ECA-65AE-41DE-B2D8-BB33FE8DF04B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AA293ECA-65AE-41DE-B2D8-BB33FE8DF04B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AA293ECA-65AE-41DE-B2D8-BB33FE8DF04B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{7787883A-DCA1-4113-A739-C7BFEA72064C} = {7857AFB9-B160-4616-ACE9-98E61E49A4BB}
+		{AA293ECA-65AE-41DE-B2D8-BB33FE8DF04B} = {0E7C1DEE-74CB-4736-96B4-16EB4F978D0B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {BEBADD36-19F5-4EE1-8969-A2A7D9E87C82}
