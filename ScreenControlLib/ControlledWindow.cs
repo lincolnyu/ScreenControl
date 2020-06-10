@@ -112,7 +112,7 @@ namespace ScreenControlLib
                 if (diffProcesses.Length == 1 && titleMatch == null)
                 {
                     Process = diffProcesses[0];
-                    SwitchToWindow();
+                    SwitchToThisWindow();
                     return true;
                 }
                 else if (titleMatch != null)
@@ -135,7 +135,7 @@ namespace ScreenControlLib
                             if (found)
                             {
                                 Process = process;
-                                SwitchToWindow();
+                                SwitchToThisWindow();
                                 return true;
                             }
                             else if (tdiff <= TimeSpan.Zero)
@@ -173,7 +173,7 @@ namespace ScreenControlLib
                             if (titleMatch(title))
                             {
                                 Process = process;
-                                SwitchToWindow();
+                                SwitchToThisWindow();
                                 return true;
                             }
                             else if (tdiff <= TimeSpan.Zero)
@@ -185,7 +185,7 @@ namespace ScreenControlLib
                 }
                 else
                 {
-                    SwitchToWindow();
+                    SwitchToThisWindow();
                     return true;
                 }
             }
@@ -194,7 +194,7 @@ namespace ScreenControlLib
         /// <summary>
         ///  When window is available for the process
         /// </summary>
-        public void SwitchToWindow()
+        public void SwitchToThisWindow()
         {
             if (MaximizeOnStartup)
             {
@@ -207,6 +207,7 @@ namespace ScreenControlLib
             //SwitchToThisWindow(Process.MainWindowHandle, true);
             // Seems this is needed to set focus on such windows as loading page
             SetForegroundWindow(Process.MainWindowHandle);
+            SetAsCurrent();
         }
 
         public static ControlledWindow Capture(string processName, Action action, bool maximize = true)
@@ -228,7 +229,7 @@ namespace ScreenControlLib
                     MaximizeOnStartup = maximize,
                     Status = Statuses.WindowValid
                 };
-                w.SwitchToWindow();
+                w.SwitchToThisWindow();
                 return w;
             }
             return null;
@@ -321,6 +322,7 @@ namespace ScreenControlLib
             {
                 p.Kill();
             }
+            UnsetAsCurrent();
         }
 
         public void Kill()
@@ -329,6 +331,7 @@ namespace ScreenControlLib
             {
                 Process.Kill();
             }
+            UnsetAsCurrent();
         }
 
         public void Close()
@@ -337,11 +340,12 @@ namespace ScreenControlLib
             {
                 Process.CloseMainWindow();
             }
+            UnsetAsCurrent();
         }
 
         public void SoftCloseWindow()
         {
-            SwitchToWindow();
+            SwitchToThisWindow();
             Input.SendKeys(
                 new []
                 {
@@ -376,5 +380,19 @@ namespace ScreenControlLib
             => Process.GetProcessesByName(ProcessPathToName(ProcessPath));
 
         public RECT? WindowRect => Process != null && GetWindowRect(Process.MainWindowHandle, out var rect) ? rect : (RECT?)null;
+
+        public static ControlledWindow CurrentForeground;
+
+        private void SetAsCurrent()
+        {
+            CurrentForeground = this;
+        }
+        private void UnsetAsCurrent()
+        {
+            if (CurrentForeground == this)
+            {
+                CurrentForeground = null;
+            }
+        }
     }
 }

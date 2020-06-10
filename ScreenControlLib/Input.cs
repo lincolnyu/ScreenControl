@@ -9,6 +9,8 @@ namespace ScreenControlLib
 {
     public static class Input
     {
+        public static bool ForceCurrentWindowBeforeSend = false;
+
         public static void TypeStr(string str)
         {
             var keys = ConvertStrToKeys(str).ToArray();
@@ -219,6 +221,10 @@ namespace ScreenControlLib
 
         public static void SendKeys(IEnumerable<Key> keys)
         {
+            if (ForceCurrentWindowBeforeSend)
+            {
+                ControlledWindow.CurrentForeground?.SwitchToThisWindow();
+            }
             var input = keys.Select(x => new INPUT
             {
                 type = (uint)INPUT_TYPE.INPUT_KEYBOARD,
@@ -237,6 +243,10 @@ namespace ScreenControlLib
 
         public static void MouseClick(int x, int y)
         {
+            if (ForceCurrentWindowBeforeSend)
+            {
+                ControlledWindow.CurrentForeground?.SwitchToThisWindow();
+            }
             SetCursorPos(x, y);
             var input = new[]
             {
@@ -266,6 +276,10 @@ namespace ScreenControlLib
 
         public static void MouseDoubleClick(int x, int y)
         {
+            if (ForceCurrentWindowBeforeSend)
+            {
+                ControlledWindow.CurrentForeground?.SwitchToThisWindow();
+            }
             SetCursorPos(x, y);
             var input = new []
             {
