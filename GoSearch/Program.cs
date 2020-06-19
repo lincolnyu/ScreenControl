@@ -4,6 +4,9 @@ using System.Diagnostics;
 using System.IO;
 using System.Threading;
 using System.Windows;
+using System.Windows.Forms;
+using Clipboard = System.Windows.Forms.Clipboard;
+using MessageBox = System.Windows.MessageBox;
 
 namespace ScreenControlConsole
 {
@@ -19,7 +22,55 @@ namespace ScreenControlConsole
         class TargetWindowExited : Exception
         {
         }
-        
+
+        struct SizeInt
+        {
+            public int Width;
+            public int Height;
+            public SizeInt(int width, int height)
+            {
+                Width = width;
+                Height = height;
+            }
+        }
+
+        struct PointInt
+        {
+            public int X;
+            public int Y;
+            public PointInt(int x, int y)
+            {
+                X = x;
+                Y = y;
+            }
+        }
+
+        class GImgClicks
+        {
+            public SizeInt ScreenResolution;
+            public PointInt CameraButton;
+            public PointInt UploadImageTab;
+            public PointInt ChooseFileButton;
+        }
+
+        static GImgClicks[] GImgClicksSupported = new []
+        {
+            new GImgClicks
+            {
+                ScreenResolution = new SizeInt(1920, 1080),
+                CameraButton = new PointInt(1200, 550),
+                UploadImageTab = new PointInt(990, 650),
+                ChooseFileButton = new PointInt(660, 720)
+            },
+            new GImgClicks
+            {
+                ScreenResolution = new SizeInt(1680, 1050),
+                CameraButton = new PointInt(1000, 420),
+                UploadImageTab = new PointInt(829, 479),
+                ChooseFileButton = new PointInt(621, 526)
+            }
+        };
+
         static void CtrlV()
         {
             var keys = new[]
@@ -50,6 +101,22 @@ namespace ScreenControlConsole
             PathType pathType = PathType.None;
             string parsedPath = null;
 
+            var screenBounds= Screen.PrimaryScreen.Bounds;
+            GImgClicks gimgClicks = null;
+            foreach (var supported in GImgClicksSupported)
+            {
+                if (supported.ScreenResolution.Width == screenBounds.Width && supported.ScreenResolution.Height == screenBounds.Height)
+                {
+                    gimgClicks = supported;
+                    break;
+                }
+            }
+            if (gimgClicks == null)
+            {
+                MessageBox.Show("Error: Screen resolution not supported.", "GoSearch");
+                return;
+            }
+
             Utility.RunAsSTAThread(() =>
             {
                 if (Clipboard.ContainsText())
@@ -67,9 +134,9 @@ namespace ScreenControlConsole
                     }
                 }
                 // Note The WPF version of Clipboard.GetImage() is buggy
-                if (System.Windows.Forms.Clipboard.ContainsImage())
+                if (Clipboard.ContainsImage())
                 {
-                    var image = System.Windows.Forms.Clipboard.GetImage();
+                    var image = Clipboard.GetImage();
                     parsedPath = Path.Combine(Path.GetTempPath(), "temp-gs.png");
                     pathType = PathType.LocalFile;
                     image.Save(parsedPath, System.Drawing.Imaging.ImageFormat.Png);
@@ -114,7 +181,24 @@ namespace ScreenControlConsole
                         return;
                     }
                     if (w.Process.HasExited) return;
-                    Input.MouseClick(1200, 550);
+
+                    //var bounds = System.Windows.Forms.Screen.PrimaryScreen.Bounds;                    
+                    //const int StandardResolutionWidth = 1920; 
+                    //const int StandardResolutionHeight = 1080;
+                    //const int StandardClickX = 1200;
+                    //const int StandardClickY = 550;
+                    //if (bounds.Width == StandardResolutionHeight && bounds.Height  == StandardResolutionWidth)
+                    //{
+                    //    Input.MouseClick(1200, 550);
+                    //}
+                    //else
+                    //{
+                    //    var x = StandardClickX * bounds.Width / StandardResolutionWidth;
+                    //    var y = StandardClickY * bounds.Height / StandardResolutionHeight;
+                    //    Input.MouseClick(x, y);
+                    //}
+                    Input.MouseClick(gimgClicks.CameraButton.X, gimgClicks.CameraButton.Y);
+
                     SleepAndCheck();
                     if (w.Process.HasExited) return;
                     if (pathType == PathType.WebUrl)
@@ -124,9 +208,9 @@ namespace ScreenControlConsole
                     }
                     else if (pathType == PathType.LocalFile)
                     {
-                        Input.MouseClick(990, 650);
+                        Input.MouseClick(gimgClicks.UploadImageTab.X, gimgClicks.UploadImageTab.Y);
                         SleepAndCheck();
-                        Input.MouseClick(600, 720);
+                        Input.MouseClick(gimgClicks.ChooseFileButton.X, gimgClicks.ChooseFileButton.Y);
                         SleepAndCheck();
                         if (parsedPath != null)
                         {

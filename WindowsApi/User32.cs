@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 using System.Text;
+using static WindowsApi.EnumLib;
 using static WindowsApi.StructLib;
 
 namespace WindowsApi
@@ -8,6 +9,8 @@ namespace WindowsApi
     public static class User32
     {
         public delegate bool EnumWindowsProc(IntPtr hWnd, IntPtr lParam);
+
+        public delegate IntPtr HookProc(int code, IntPtr wParam, IntPtr lParam);
 
         [DllImport("user32.dll")]
         public static extern uint SendInput(uint nInputs,
@@ -109,5 +112,8 @@ namespace WindowsApi
 
         [DllImport("user32.dll")]
         public static extern IntPtr GetForegroundWindow();
+
+        [DllImport("user32.dll", SetLastError = true)]
+        public static extern IntPtr SetWindowsHookEx(HookType hookType, HookProc lpfn, IntPtr hMod, uint dwThreadId);
     }
 }

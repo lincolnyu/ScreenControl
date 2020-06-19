@@ -19,6 +19,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pingshu8", "Pingshu8\Pingsh
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Lab", "Lab", "{7857AFB9-B160-4616-ACE9-98E61E49A4BB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GlobalMouse", "GlobalMouse\GlobalMouse.csproj", "{982E1B46-BC02-4E8B-8270-D5A88D589C7D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -49,6 +51,10 @@ Global
 		{AA293ECA-65AE-41DE-B2D8-BB33FE8DF04B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AA293ECA-65AE-41DE-B2D8-BB33FE8DF04B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AA293ECA-65AE-41DE-B2D8-BB33FE8DF04B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{982E1B46-BC02-4E8B-8270-D5A88D589C7D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{982E1B46-BC02-4E8B-8270-D5A88D589C7D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{982E1B46-BC02-4E8B-8270-D5A88D589C7D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{982E1B46-BC02-4E8B-8270-D5A88D589C7D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
