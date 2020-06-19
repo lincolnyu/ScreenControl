@@ -17,7 +17,7 @@ namespace Pingshu8
         ///  1. https://stackoverflow.com/questions/2251578/how-do-i-get-the-selected-text-from-the-focused-window-using-native-win32-api
         /// 
         /// </remarks>
-        static void Main(string[] args)
+        static void Main()
         {
             // http://www.pingshu8.com/down_95241.html
             // http://www.pingshu8.com/down_96003.html
